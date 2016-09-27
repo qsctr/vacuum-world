@@ -62,7 +62,7 @@ eventHandler _ state = return state
 
 printState :: State -> IO State
 printState state = do
-    callCommand "cls"
+    callCommand "cls" -- only works on Windows
     putStrLn "Click to change stuff, space bar to play/pause"
     pPrint state
     return state
