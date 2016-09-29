@@ -36,7 +36,10 @@ main = do
                 , .. }
             _ <- printState initial
             playIO (InWindow "Vacuum world" (820, 420) (500, 200)) white 1 initial (return . draw) eventHandler $ const update
-        Nothing -> putStrLn "Failed to read pictures, press enter to exit" >> getLine >> return ()
+        Nothing -> do
+            putStrLn "Failed to read pictures, press enter to exit"
+            _ <- getLine
+            return ()
 
 update :: State -> IO State
 update state@State {..}
