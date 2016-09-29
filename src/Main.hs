@@ -9,7 +9,16 @@ import Text.Show.Pretty
 
 data Vacuum = L | R deriving (Eq, Show)
 data Action = MoveL | MoveR | Suck | NoOp deriving (Eq, Show)
-data State = State { vacuum :: Vacuum, dirtL :: Bool, dirtR :: Bool, action :: Action, playing :: Bool, cost :: Int, vacuumPicture :: Picture, dirtPicture :: Picture } deriving (Show)
+data State = State
+    { vacuum :: Vacuum
+    , dirtL :: Bool
+    , dirtR :: Bool
+    , action :: Action
+    , playing :: Bool
+    , cost :: Int
+    , vacuumPicture :: Picture
+    , dirtPicture :: Picture
+    } deriving (Show)
 
 main :: IO ()
 main = do
@@ -17,13 +26,17 @@ main = do
     dirtPictureM <- loadJuicyPNG "dirt.png"
     case sequence [vacuumPictureM, dirtPictureM] of
         Just [vacuumPicture, dirtPicture] -> do
-            let initial = State { vacuum = L, dirtL = True, dirtR = True, action = NoOp, playing = False, cost = 0, .. }
+            let initial = State
+                { vacuum = L
+                , dirtL = True
+                , dirtR = True
+                , action = NoOp
+                , playing = False
+                , cost = 0
+                , .. }
             _ <- printState initial
             playIO (InWindow "Vacuum world" (820, 420) (500, 200)) white 1 initial (return . draw) eventHandler $ const update
-        Nothing -> do
-            putStrLn "Failed to read pictures, press enter to exit"
-            _ <- getLine
-            return ()
+        Nothing -> putStrLn "Failed to read pictures, press enter to exit" >> getLine >> return ()
 
 update :: State -> IO State
 update state@State {..}
@@ -64,5 +77,6 @@ printState :: State -> IO State
 printState state = do
     callCommand "cls" -- only works on Windows
     putStrLn "Click to change stuff, space bar to play/pause"
+    putStrLn "Picture credit: the AIMA slides pdf"
     pPrint state
     return state
