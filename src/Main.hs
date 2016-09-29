@@ -27,13 +27,13 @@ main = do
     case sequence [vacuumPictureM, dirtPictureM] of
         Just [vacuumPicture, dirtPicture] -> do
             let initial = State
-                { vacuum = L
-                , dirtL = True
-                , dirtR = True
-                , action = NoOp
-                , playing = False
-                , cost = 0
-                , .. }
+                    { vacuum = L
+                    , dirtL = True
+                    , dirtR = True
+                    , action = NoOp
+                    , playing = False
+                    , cost = 0
+                    , .. }
             _ <- printState initial
             playIO (InWindow "Vacuum world" (820, 420) (500, 200)) white 1 initial (return . draw) eventHandler $ const update
         Nothing -> do
